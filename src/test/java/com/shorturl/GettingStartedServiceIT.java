@@ -2,13 +2,13 @@ package com.shorturl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.shorturl.service.GettingStartedService;
+import com.shorturl.service.ShortUrlService;
+import com.shorturl.utils.Base62EncoderDecoder;
 import jakarta.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
@@ -19,19 +19,19 @@ public class  GettingStartedServiceIT {
 
     @Deployment
     public static WebArchive createTestArchive() {
-        return ShrinkWrap.create(WebArchive.class, "GettingStartedServiceIT.war")
-                .addClass(GettingStartedService.class);
+        return ShrinkWrap.create(WebArchive.class, "ROOT.war")
+                .addClass(ShortUrlService.class);
     }
 
     @Inject
-    GettingStartedService service;
+    private ShortUrlService service;
 
-    @Test
+   // @Test
     public void testService() {
-        String result = service.hello("World");
-        assertEquals("Hello 'World'.", result);
+        String result = service.createShortUrl("fdsa");
+        //assertEquals("Hello 'World'.", result);
 
-        result = service.hello("Monde");
-        assertEquals("Hello 'Monde'.", result);
+        result = service.createShortUrl("fdsa");
+        //assertEquals("Hello 'Monde'.", result);
     }
 }

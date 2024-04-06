@@ -24,10 +24,10 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Welcome to WildFly Application Server</title>
+    <title>Welcome to Url shortener Application Server</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="normalize.min.css">
+   <!-- <link rel="stylesheet" href="a5bbd2daaba8a81a.css">-->
     <link rel="stylesheet" href="wildfly.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
     <script>
@@ -37,10 +37,24 @@
                 const button = document.querySelector("button[type='submit']");
                 button.addEventListener("click", (event) => {
                     event.preventDefault();
-                    let name = document.querySelector('#nameInput');
-                    name = encodeURIComponent(name.value);
+                    let longUrl = document.querySelector('#urlInput');
+                    longUrl = encodeURIComponent(longUrl.value);
                     const result = document.querySelector('#result');
-                    fetch(`/hello/${name}`)
+                    const data = JSON.stringify({
+                        long_url: longUrl
+                    });
+                    fetch(`/url/shortify/`, {
+                        method: "POST",
+                        mode: "cors", // no-cors, *cors, same-origin
+                        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                        credentials: "same-origin", // include, *same-origin, omit
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        redirect: "follow", // manual, *follow, error
+                        referrerPolicy: "no-referrer",
+                        body: data
+                    })
                         .then(response => {
                             if (response.status === 200) {
                                 response.text().then(content => result.textContent = content);
@@ -54,25 +68,53 @@
     </script>
 </head>
 <body>
-<div class="wrapper">
-    <div class="content">
-        <div class="logo">
-            <img src="wildfly_logo.png" alt="Logo" title="Logo"/>
-        </div>
-        <h1>Getting Started</h1>
-        <div id="interactive">
-            <form name="nameForm">
-                <label for="nameInput">Name: </label>
-                <input type="text" id="nameInput">
-                <button type="submit">Say Hello</button>
-            </form>
-            <p id="result">
-            </p>
+<!--<div class="wrapper">
+<div class="content">
+    <div class="logo">
+        <img src="wildfly_logo.png" alt="Logo" title="Logo"/>
+    </div>
+    <h1 class="text-2xl font-medium text-blue-500">
+        <span class="text-blue-500">URL Shortener</span>
+    </h1>
+    <div id="interactive">
+        <form name="nameForm">
+            <input class="outline-none border-2 border-blue-600 rounded-md backdrop-blur-xl bg-white/20 shadow-md px-3 py-3" type="text" id="nameInput" placeholder=https://....>
+            <button class="bg-blue-500 text-white px-8 py-3 ml-4 rounded-md" type="submit">Generate short url</button>
+        </form>
+        <p id="result">
+        </p>
+    </div>
+</div>
+</div>-->
+<div id="root">
+    <div class="container h-screen flex justify-center ">
+        <div class="text-center absolute top-1/3">
+            <div class="grid grid-cols-6 gap-4">
+                <div class="col-start-2 col-span-4 mb-8">
+                    <h1 class="text-2xl font-medium text-blue-500">
+                        <span class="text-blue-500">URL Shortener</span>
+                    </h1>
+                </div>
+                <div class="col-start-2 col-end-4">
+                    <input size="150" id="urlInput"
+                            class=" border-2 border-blue-600 rounded-md backdrop-blur-xl bg-white/20 shadow-md px-3 py-3"
+                            type="text"
+                            placeholder=https://....
+                    />
+                </div>
+                <div class="col-start-4 col-end-6">
+                    <button type="submit" class="bg-blue-500 text-white px-8 py-3 ml-4 rounded-md">
+                        Generate short url
+                    </button>
+                </div>
+                <div class="col-start-1 col-end-7 mt-8">
+                    <p id="result">
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<footer>
-  <p>This page is served by your application. The source is in <code>src/main/webapp/index.html</code>.</p>
-</footer>
+</div>
 </body>
 </html>

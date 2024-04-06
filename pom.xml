@@ -19,6 +19,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <version>43</version>
+    </parent>
+
     <groupId>com.shorturl</groupId>
     <artifactId>shortener</artifactId>
     <version>1.0.0-SNAPSHOT</version>
@@ -132,10 +139,22 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Import the JAX-RS API, we use provided scope as the API is included in WildFly -->
         <dependency>
             <groupId>jakarta.ws.rs</groupId>
             <artifactId>jakarta.ws.rs-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-core-spi</artifactId>
             <scope>provided</scope>
         </dependency>
 
@@ -186,6 +205,11 @@
                 <configuration>
                     <!-- Jakarta EE doesn't require web.xml, Maven needs to catch up! -->
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+                   <!-- <archive>
+                        <manifestEntries>
+                            <Dependencies>com.h2database.h2</Dependencies>
+                        </manifestEntries>
+                    </archive>-->
                 </configuration>
             </plugin>
 
@@ -207,6 +231,16 @@
                         <layer>cloud-server</layer>
                         <layer>h2-datasource</layer>
                     </layers>
+                    <packaging-scripts>
+                        <packaging-script>
+                            <scripts>
+                                <!-- Enable data source in standalone.xml -->
+                                <script>${basedir}/configure-server.cli</script>
+                            </scripts>
+                            <!-- Expressions resolved during server execution -->
+                            <resolve-expressions>false</resolve-expressions>
+                        </packaging-script>
+                    </packaging-scripts>
                 </configuration>
                 <executions>
                     <execution>

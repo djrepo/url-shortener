@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<persistence version="2.1"
+   xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="
+        http://xmlns.jcp.org/xml/ns/persistence
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+   <persistence-unit name="primary">
+      <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+      <!-- If you are running in a production environment, add a managed
+         data source, this example data source is just for development and testing! -->
+      <!-- The datasource is deployed as WEB-INF/hibernate-quickstart-ds.xml, you
+         can find it in the source at src/main/webapp/WEB-INF/hibernate-quickstart-ds.xml -->
+      <jta-data-source>java:jboss/datasources/HibernateShorterDS</jta-data-source>
+      <properties>
+         <!-- Properties for Hibernate -->
+         <property name="hibernate.hbm2ddl.auto" value="create" />
+         <property name="hibernate.show_sql" value="false" />
+         <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+         <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+      </properties>
+   </persistence-unit>
+
+
+<!--
+   <persistence-unit name="jpa-mysql" transaction-type="RESOURCE_LOCAL">
+      <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+      <properties>
+
+         &lt;!&ndash; Configuraton for MySQL &ndash;&gt;
+         <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/jpa_example" />
+         <property name="javax.persistence.jdbc.user" value="root" />
+         <property name="javax.persistence.jdbc.password" value="root" />
+         <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+         <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+
+         <property name="hibernate.show_sql" value="true" />
+         <property name="hibernate.format_sql" value="true" />
+         <property name="hibernate.hbm2ddl.auto" value="create" />
+
+         &lt;!&ndash;
+         <property name="hibernate.hbm2ddl.auto" value="validate" />
+         &ndash;&gt;
+         &lt;!&ndash; Configuring Connection Pool &ndash;&gt;
+         &lt;!&ndash;
+         <property name="hibernate.c3p0.min_size" value="5" />
+         <property name="hibernate.c3p0.max_size" value="20" />
+         <property name="hibernate.c3p0.timeout" value="500" />
+         <property name="hibernate.c3p0.max_statements" value="50" />
+         <property name="hibernate.c3p0.idle_test_period" value="2000" />
+         &ndash;&gt;
+      </properties>
+   </persistence-unit>
+-->
+
+</persistence>
