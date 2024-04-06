@@ -14,49 +14,6 @@ import java.util.Map;
 * Utility class to decode and encode
 */
 public class Base62EncoderDecoder {
-/*
-    // Define characters allowed in the shortened URL
-    private static final String base62alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    private char[] base62alphabetArray = base62alphabet.toCharArray();
-
-    *//**
-     * Encode id using base62 algorithm.
-     *
-     * @param id The id which original URL is stored in db.
-     * @return encoded integer to text
-     *//*
-    public String idToShortURL(long id) {
-        StringBuffer shorturl = new StringBuffer();
-        // Convert given integer id to a base 62 number
-        while (id > 0) {
-            // use above map to store actual character
-            // in short url
-            shorturl.append(base62alphabetArray[id % 62]);
-            id = id / 62;
-        }
-        // Reverse shortURL to complete base conversion
-        return shorturl.reverse().toString();
-    }
-
-    *//**
-     * Decode short url back to integer ID using base62 algorithm
-     *
-     * @param shortURL The short URL to find database id.
-     * @return decoded id from The shortened URL.
-     *//*
-    public int shortURLtoID(String shortURL)  {
-        int id = 0; // initialize result
-        // A simple base conversion logic
-        for (int i = 0; i < shortURL.length(); i++) {
-            if ('a' <= shortURL.charAt(i) && shortURL.charAt(i) <= 'z')
-                id = id * 62 + shortURL.charAt(i) - 'a';
-            if ('A' <= shortURL.charAt(i) && shortURL.charAt(i) <= 'Z')
-                id = id * 62 + shortURL.charAt(i) - 'A' + 26;
-            if ('0' <= shortURL.charAt(i) && shortURL.charAt(i) <= '9')
-                id = id * 62 + shortURL.charAt(i) - '0' + 52;
-        }
-        return id;
-    }*/
 
     private static final int ZERO = 0;
     private static final char CHAR_ZERO = '0';

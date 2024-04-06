@@ -5,25 +5,63 @@ import com.shorturl.repository.ShortUrlRepository;
 import com.shorturl.utils.Base62EncoderDecoder;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.util.logging.Logger;
+
+import jakarta.transaction.Transactional;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.hibernate.exception.ConstraintViolationException;
+
+import java.sql.SQLOutput;
+import java.util.Set;
 
 @ApplicationScoped
 public class ShortUrlService {
 
+    private static final Logger LOG = Logger.getLogger(ShortUrlService.class.toString());
+
     @Inject
     private ShortUrlRepository shortUrlRepository;
 
-    public String createShortUrl(String originalUrl){
-        String domain = System.getProperty("domain");
-        UrlEntity urlEntity = new UrlEntity();
-        urlEntity.setOriginalUrl(originalUrl);
-        long id = shortUrlRepository.store(urlEntity);
-        String shortURL = Base62EncoderDecoder.encode(id);
-        return domain+shortURL;
-    }
+    @Inject
+    @ConfigProperty(name = "domain")
+    private String domain;
 
     public String getOriginalUrl(String shortUrl) {
         long id = Base62EncoderDecoder.decodeLong(shortUrl);
+        LOG.info(shortUrl+" translated "+id);
         UrlEntity urlEntity = shortUrlRepository.findById(id);
-        return urlEntity.getOriginalUrl();
+        if (urlEntity!=null){
+            return urlEntity.getOriginalUrl();
+        }
+        return null;
     }
+
+    @Transactional
+    public String createShortUrl(String originalUrl){
+        UrlEntity newUrlEntity = createUrlEntity(originalUrl);
+        UrlEntity storedUrlEntity = storeOrRetrieve(newUrlEntity);
+        String shortURL = Base62EncoderDecoder.encode(storedUrlEntity.getId());
+        return domain+"/"+shortURL;
+    }
+
+    private UrlEntity storeOrRetrieve(UrlEntity entity) {
+        UrlEntity alreadyStoredUrlEntity = shortUrlRepository.findByHashAndOriginalUrl(entity);
+        if (alreadyStoredUrlEntity!=null) {
+            return alreadyStoredUrlEntity;
+        }
+        Long id = shortUrlRepository.store(entity);
+        entity.setId(id);
+        return entity;
+    }
+
+    private UrlEntity createUrlEntity(String originalUrl) {
+        String hash = DigestUtils.md5Hex(originalUrl).toUpperCase();
+        UrlEntity entity = new UrlEntity();
+        entity.setOriginalUrl(originalUrl);
+        entity.setOriginalUrlHash(hash);
+        return entity;
+    }
+
+
 }

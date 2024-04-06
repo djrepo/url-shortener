@@ -21,18 +21,20 @@
         http://xmlns.jcp.org/xml/ns/persistence
         http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
    <persistence-unit name="primary">
-      <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
       <!-- If you are running in a production environment, add a managed
          data source, this example data source is just for development and testing! -->
-      <!-- The datasource is deployed as WEB-INF/hibernate-quickstart-ds.xml, you
-         can find it in the source at src/main/webapp/WEB-INF/hibernate-quickstart-ds.xml -->
       <jta-data-source>java:jboss/datasources/HibernateShorterDS</jta-data-source>
+      <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
       <properties>
          <!-- Properties for Hibernate -->
-         <property name="hibernate.hbm2ddl.auto" value="create" />
+         <property name="hibernate.hbm2ddl.auto" value="update" />
          <property name="hibernate.show_sql" value="false" />
          <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-         <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+         <property name="hibernate.cache.use_second_level_cache" value="true"/>
+         <property name="hibernate.cache.use_query_cache" value="true"/>
+         <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.infinispan.InfinispanRegionFactory"/>
+         <property name="hibernate.cache.infinispan.cfg" value="infinispan-configs.xml"/>
+
       </properties>
    </persistence-unit>
 

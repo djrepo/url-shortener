@@ -43,7 +43,10 @@
 
         <!-- JBoss dependency versions -->
         <version.wildfly.maven.plugin>4.2.1.Final</version.wildfly.maven.plugin>
-        <version.wildfly.bom>31.0.0.Final</version.wildfly.bom>
+        <version.server>31.0.1.Final</version.server>
+        <version.bom.ee>${version.server}</version.bom.ee>
+        <version.bom.microprofile>${version.server}</version.bom.microprofile>
+        <version.infinispan>13.0.21.Final</version.infinispan>
         <version.pack.datasources>7.0.0.Final</version.pack.datasources>
 
         <!--Use JUnit 5 here - the WildFly bom still brings 4.x -->
@@ -96,7 +99,23 @@
             <dependency>
                 <groupId>org.wildfly.bom</groupId>
                 <artifactId>wildfly-ee-with-tools</artifactId>
-                <version>${version.wildfly.bom}</version>
+                <version>${version.bom.ee}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wildfly.bom</groupId>
+                <artifactId>wildfly-microprofile</artifactId>
+                <version>${version.bom.microprofile}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.infinispan</groupId>
+                <artifactId>infinispan-bom</artifactId>
+                <version>${version.infinispan}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -113,7 +132,12 @@
     </dependencyManagement>
 
     <dependencies>
-
+        <!-- Import the MicroProfile Config API, we use provided scope as the API is included in the server -->
+        <dependency>
+            <groupId>org.eclipse.microprofile.config</groupId>
+            <artifactId>microprofile-config-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <!-- Import the CDI API, we use provided scope as the API is included in WildFly -->
         <dependency>
             <groupId>jakarta.enterprise</groupId>
@@ -153,9 +177,26 @@
         </dependency>
 
         <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-hibernate-cache-v53</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-core-spi</artifactId>
+            <artifactId>resteasy-jackson2-provider</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.16.1</version>
         </dependency>
 
         <!-- Test scope dependencies -->
@@ -221,7 +262,7 @@
                 <configuration>
                     <feature-packs>
                         <feature-pack>
-                            <location>org.wildfly:wildfly-galleon-pack:${version.wildfly.bom}</location>
+                            <location>org.wildfly:wildfly-galleon-pack:${version.bom.ee}</location>
                         </feature-pack>
                         <feature-pack>
                             <location>org.wildfly:wildfly-datasources-galleon-pack:${version.pack.datasources}</location>
@@ -229,6 +270,7 @@
                     </feature-packs>
                     <layers>
                         <layer>cloud-server</layer>
+                        <layer>microprofile-config</layer>
                         <layer>h2-datasource</layer>
                     </layers>
                     <packaging-scripts>

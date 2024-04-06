@@ -1,9 +1,12 @@
 package com.shorturl.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name="URL_ENTITY")
+@Table(name="URL_ENTITY", indexes = {
+        @Index(columnList = "ORIGINAL_URL_HASH", name = "hash_idx")})
+@Cacheable
 public class UrlEntity {
 
     @Id
@@ -12,6 +15,9 @@ public class UrlEntity {
 
     @Column(name = "ORIGINAL_URL", unique=true, columnDefinition="TEXT")
     private String originalUrl;
+
+    @Column(name = "ORIGINAL_URL_HASH", unique=true)
+    private String originalUrlHash;
 
     public UrlEntity() {}
 
@@ -29,6 +35,14 @@ public class UrlEntity {
 
     public void setOriginalUrl(String originalUrl) {
         this.originalUrl = originalUrl;
+    }
+
+    public String getOriginalUrlHash() {
+        return originalUrlHash;
+    }
+
+    public void setOriginalUrlHash(String originalUrlHash) {
+        this.originalUrlHash = originalUrlHash;
     }
 
     @Override
