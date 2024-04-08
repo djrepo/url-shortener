@@ -28,7 +28,6 @@ public class ShorteningApplicationIT {
                     .request()
                     .get();
             assertEquals(307, response.getStatus());
-            //assertEquals("Hello 'World'.", response.readEntity(String.class));
 
         }
     }
