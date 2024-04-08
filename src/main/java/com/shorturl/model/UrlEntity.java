@@ -3,11 +3,15 @@ package com.shorturl.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name="URL_ENTITY", indexes = {
         @Index(columnList = "ORIGINAL_URL_HASH", name = "hash_idx")})
 @Cacheable
-public class UrlEntity {
+public class UrlEntity implements Serializable {
+    /** Default value included to remove warning. Remove or modify at will. **/
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

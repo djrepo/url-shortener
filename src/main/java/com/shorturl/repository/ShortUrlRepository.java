@@ -12,6 +12,10 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 @ApplicationScoped
 public class ShortUrlRepository {
+
+    private static final String FIND_BY_ID = "SELECT u FROM UrlEntity u WHERE u.id = :id";
+    private static final String FIND_BY_HASH = "SELECT u FROM UrlEntity u WHERE u.originalUrlHash = :hash and u.originalUrl = :originalUrl";
+
     @PersistenceContext
     private EntityManager em;
 
@@ -21,7 +25,7 @@ public class ShortUrlRepository {
     }
 
     public UrlEntity findById(long id) {
-        return em.createQuery("SELECT u FROM UrlEntity u WHERE u.id = :id", UrlEntity.class)
+        return em.createQuery(FIND_BY_ID, UrlEntity.class)
                 .setParameter("id", id)
                 .getResultList()
                 .stream()
@@ -30,7 +34,7 @@ public class ShortUrlRepository {
     }
 
     public UrlEntity findByHashAndOriginalUrl(UrlEntity urlEntity) {
-        return em.createQuery("SELECT u FROM UrlEntity u WHERE u.originalUrlHash = :hash and u.originalUrl = : originalUrl", UrlEntity.class)
+        return em.createQuery(FIND_BY_HASH, UrlEntity.class)
                 .setParameter("hash", urlEntity.getOriginalUrlHash())
                 .setParameter("originalUrl", urlEntity.getOriginalUrl())
                 .getResultList()
