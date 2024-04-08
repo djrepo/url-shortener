@@ -17,18 +17,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
  */
 @RunAsClient
 @ExtendWith(ArquillianExtension.class)
-public class GettingStartedApplicationIT {
+public class ShorteningApplicationIT {
 
-    //@Test
+    @Test
     public void testHelloEndpoint() {
         try (Client client = ClientBuilder.newClient()) {
             Response response = client
-                    .target(URI.create("http://localhost:8080/"))
-                    .path("/hello/1")
+                    .target(URI.create("http://localhost:8080"))
+                    .path("/api/0")
                     .request()
                     .get();
-
-            assertEquals(200, response.getStatus());
+            assertEquals(307, response.getStatus());
             //assertEquals("Hello 'World'.", response.readEntity(String.class));
 
         }

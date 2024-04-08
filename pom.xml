@@ -48,6 +48,8 @@
         <version.bom.microprofile>${version.server}</version.bom.microprofile>
         <version.infinispan>13.0.21.Final</version.infinispan>
         <version.pack.datasources>7.0.0.Final</version.pack.datasources>
+        <version.arquillian>1.6.0.Final</version.arquillian>
+        <version.arquillian.persistence>1.0.0.Alpha7</version.arquillian.persistence>
 
         <!--Use JUnit 5 here - the WildFly bom still brings 4.x -->
         <version.junit5>5.10.1</version.junit5>
@@ -127,6 +129,14 @@
                 <version>5.10.1</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.arquillian}</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -215,6 +225,13 @@
         <dependency>
             <groupId>org.wildfly.arquillian</groupId>
             <artifactId>wildfly-arquillian-container-managed</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.arquillian.extension</groupId>
+            <artifactId>arquillian-persistence-dbunit</artifactId>
+            <version>${version.arquillian.persistence}</version>
             <scope>test</scope>
         </dependency>
 

@@ -38,12 +38,12 @@
                 button.addEventListener("click", (event) => {
                     event.preventDefault();
                     let longUrl = document.querySelector('#urlInput');
-                    longUrl = encodeURIComponent(longUrl.value);
+                    longUrl = longUrl.value;
                     const result = document.querySelector('#result');
                     const data = JSON.stringify({
                         long_url: longUrl
                     });
-                    fetch(`/url/shortify/`, {
+                    fetch(`/api/shortify/`, {
                         method: "POST",
                         mode: "cors", // no-cors, *cors, same-origin
                         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -51,7 +51,6 @@
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        redirect: "follow", // manual, *follow, error
                         referrerPolicy: "no-referrer",
                         body: data
                     })

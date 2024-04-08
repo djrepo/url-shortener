@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "93fc6b8b-54c5-4a9b-a312-350a5763b5c7",
+		"name": "shortify",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "redirect",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shortify",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"long_url\": \"http://stackoverflow.com/questions/30378614/restful-services-on-jboss-7-not-responding\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/shortify/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"shortify",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
