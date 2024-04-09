@@ -11,7 +11,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  * Repository class for managing URL entities.
  */
 @ApplicationScoped
-public class ShortUrlRepository {
+public class ShortUrlRepository implements IShortUrlRepository {
 
     private static final String FIND_BY_ID = "SELECT u FROM UrlEntity u WHERE u.id = :id";
     private static final String FIND_BY_HASH = "SELECT u FROM UrlEntity u WHERE u.originalUrlHash = :hash and u.originalUrl = :originalUrl";
@@ -19,11 +19,13 @@ public class ShortUrlRepository {
     @PersistenceContext
     private EntityManager em;
 
+    @Override
     public Long store(UrlEntity urlEntity) {
         em.persist(urlEntity);
         return urlEntity.getId();
     }
 
+    @Override
     public UrlEntity findById(long id) {
         return em.createQuery(FIND_BY_ID, UrlEntity.class)
                 .setParameter("id", id)
@@ -33,6 +35,7 @@ public class ShortUrlRepository {
                 .orElse(null);
     }
 
+    @Override
     public UrlEntity findByHashAndOriginalUrl(UrlEntity urlEntity) {
         return em.createQuery(FIND_BY_HASH, UrlEntity.class)
                 .setParameter("hash", urlEntity.getOriginalUrlHash())

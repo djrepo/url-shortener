@@ -1,6 +1,7 @@
 package com.shorturl.service;
 
 import com.shorturl.model.UrlEntity;
+import com.shorturl.repository.IShortUrlRepository;
 import com.shorturl.repository.ShortUrlRepository;
 import com.shorturl.utils.Base62EncoderDecoder;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -16,17 +17,18 @@ import java.sql.SQLOutput;
 import java.util.Set;
 
 @ApplicationScoped
-public class ShortUrlService {
+public class ShortUrlService implements IShortUrlService {
 
     private static final Logger LOG = Logger.getLogger(ShortUrlService.class.toString());
 
     @Inject
-    private ShortUrlRepository shortUrlRepository;
+    private IShortUrlRepository shortUrlRepository;
 
     @Inject
     @ConfigProperty(name = "domain")
     private String domain;
 
+    @Override
     public String getOriginalUrl(String shortUrl) {
         long id = Base62EncoderDecoder.decodeLong(shortUrl);
         LOG.info(shortUrl+" translated "+id);
@@ -38,6 +40,7 @@ public class ShortUrlService {
     }
 
     @Transactional
+    @Override
     public String createShortUrl(String originalUrl){
         UrlEntity newUrlEntity = createUrlEntity(originalUrl);
         UrlEntity storedUrlEntity = storeOrRetrieve(newUrlEntity);

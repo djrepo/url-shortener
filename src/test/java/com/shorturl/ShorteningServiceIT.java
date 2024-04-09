@@ -6,6 +6,7 @@ import com.shorturl.config.JaxRsActivator;
 import com.shorturl.controller.ShortUrlResource;
 import com.shorturl.model.UrlEntity;
 import com.shorturl.repository.ShortUrlRepository;
+import com.shorturl.service.IShortUrlService;
 import com.shorturl.service.ShortUrlService;
 import jakarta.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -22,8 +23,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Run integration tests with Arquillian to be able to test CDI beans
  */
 @ExtendWith(ArquillianExtension.class)
-@CleanupUsingScript("clean-database.sql")
-@UsingDataSet("init-database.xml")
+//@CleanupUsingScript("clean-database.sql")
+//@UsingDataSet("init-database.xml")
 public class ShorteningServiceIT {
 
     @Deployment
@@ -38,7 +39,7 @@ public class ShorteningServiceIT {
     }
 
     @Inject
-    private ShortUrlService service;
+    private IShortUrlService service;
 
     @Test
     public void testService() {

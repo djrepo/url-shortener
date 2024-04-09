@@ -3,6 +3,7 @@ package com.shorturl.controller;
 import com.shorturl.model.LongUrlWrapper;
 import com.shorturl.model.UrlEntity;
 import com.shorturl.repository.ShortUrlRepository;
+import com.shorturl.service.IShortUrlService;
 import com.shorturl.service.ShortUrlService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
 public class ShortUrlResource {
     private static final Logger LOG = Logger.getLogger(ShortUrlResource.class.toString());
     @Inject
-    private ShortUrlService shortUrlService;
+    private IShortUrlService shortUrlService;
 
     /**
      * Convert a new URL to short url
